@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @company.name %>
+</p>
+
+<%= form_with(model: [ @company, @area, Employee.new ], local: true) do |f| %>
+  <%= f.hidden_field :company_id, value: @company.id %> 
+  <div class="form-group">
+    <%= f.label :first_name, "First name" %>
+    <%= f.text_field :first_name, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :last_name, "Last name" %>
+    <%= f.text_field :last_name, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :email, "E-mail" %>
+    <%= f.text_field :email, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :area_id, "Area" %>
+    <%= f.select :area_id, Area.pluck(:name, :id), class: "form-control" %>
+  </div>
+  <%= f.submit "Send", class: "btn btn-primary" %>
+<% end %>
+
+
+<h2> Employees: </h2>
+<ul>
+  <% @company.employees.each do |employee| %>
+    <li> 
+      <%= employee.first_name %> 
+      <%= employee.last_name %>
+      <%= employee.email %>
+      <%= Area.find(employee.area_id).name %>
+    </li>
+  <% end %>
+</ul>
+
+
+<%= link_to 'Edit', edit_company_path(@company) %> |
+<%= link_to 'Back', companies_path %>
